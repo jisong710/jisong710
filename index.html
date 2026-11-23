@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jisong Studio - Embedded System, IoT, Server Maintenance, Software Development, dan AI Development." />
+  <meta name="theme-color" content="#0b1220" />
+  <meta property="og:title" content="Jisong Studio" />
+  <meta property="og:description" content="Studio teknologi untuk Embedded System, IoT, Server Maintenance, Software Development, dan AI Development." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://studio.jisong.id" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232e73c5'/%3E%3Cstop offset='1' stop-color='%2300d4ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='41' font-family='Arial,sans-serif' font-weight='900' font-size='24' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E" />
+  <title>Jisong Studio | Embedded, IoT, Server, Software & AI</title>
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1220;
+      --card: rgba(255, 255, 255, 0.075);
+      --card-strong: rgba(255, 255, 255, 0.12);
+      --line: rgba(255, 255, 255, 0.14);
+      --text: #edf4ff;
+      --muted: #9fb0c6;
+      --primary: #2e73c5;
+      --primary-2: #00d4ff;
+      --accent: #ffd84d;
+      --danger: #ff6b6b;
+      --success: #40e68a;
+      --shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(46, 115, 197, 0.28), transparent 28%),
+        radial-gradient(circle at 80% 5%, rgba(0, 212, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 65% 70%, rgba(255, 216, 77, 0.09), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body.light {
+      --bg: #f6f9ff;
+      --bg-soft: #ffffff;
+      --card: rgba(255, 255, 255, 0.78);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --line: rgba(8, 20, 40, 0.13);
+      --text: #06111f;
+      --muted: #506277;
+      --shadow: 0 20px 70px rgba(46, 115, 197, 0.15);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(46, 115, 197, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 5%, rgba(0, 212, 255, 0.10), transparent 30%),
+        radial-gradient(circle at 65% 70%, rgba(255, 216, 77, 0.13), transparent 28%),
+        var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img, svg {
+      max-width: 100%;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.08;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .orb {
+      pointer-events: none;
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.18), transparent 62%);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      filter: blur(8px);
+      transition: opacity 0.25s ease;
+    }
+
+    .grid-bg {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 82%);
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 34px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    header {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      transition: 0.25s ease;
+    }
+
+    header.scrolled {
+      top: 0;
+      padding-top: 10px;
+    }
+
+    header.scrolled .nav {
+      background: rgba(5, 8, 22, 0.76);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 14px 44px rgba(0,0,0,.23);
+    }
+
+    body.light header.scrolled .nav {
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.055);
+      backdrop-filter: blur(18px);
+      transition: 0.25s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(46,115,197,1), rgba(0,212,255,.92)),
+        var(--primary);
+      color: white;
+      box-shadow: 0 10px 30px rgba(46,115,197,.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 18px;
+      background: rgba(255,255,255,.35);
+      transform: rotate(-35deg) translateY(-34px);
+      animation: shine 4s ease-in-out infinite;
+    }
+
+    @keyframes shine {
+      0%, 70% { transform: rotate(-35deg) translate(-60px, -34px); }
+      100% { transform: rotate(-35deg) translate(65px, 42px); }
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a {
+      padding: 10px 13px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 750;
+      transition: .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+      background: var(--card);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn, .menu-btn {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: var(--card);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .icon-btn:hover, .menu-btn:hover {
+      transform: translateY(-2px);
+      background: var(--card-strong);
+    }
+
+    .menu-btn {
+      display: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-weight: 850;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 14px 35px rgba(46,115,197,.25);
+      cursor: pointer;
+      transition: .22s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 50px rgba(46,115,197,.32);
+    }
+
+    .btn.secondary {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--line);
+      box-shadow: none;
+    }
+
+    .btn.warning {
+      background: linear-gradient(135deg, #ffd84d, #ff9f43);
+      color: #151000;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      min-height: 100vh;
+      padding: 150px 0 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      backdrop-filter: blur(14px);
+    }
+
+    .pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 0 rgba(64, 230, 138, 0.8);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(64, 230, 138, .75); }
+      75% { box-shadow: 0 0 0 13px rgba(64, 230, 138, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(64, 230, 138, 0); }
+    }
+
+    h1 {
+      margin-top: 24px;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: .94;
+      letter-spacing: -0.07em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #fff, #8edaff 42%, #ffd84d 78%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    body.light .gradient-text {
+      background: linear-gradient(90deg, #06111f, #2e73c5 52%, #c07c00 90%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      margin-top: 22px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.75;
+    }
+
+    .typing {
+      color: var(--primary-2);
+      font-weight: 900;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 34px;
+      max-width: 660px;
+    }
+
+    .stat {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      backdrop-filter: blur(14px);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.04em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 18px;
+      border-radius: 36px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.045));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(0,212,255,.25), transparent 34%);
+      opacity: .9;
+      pointer-events: none;
+    }
+
+    .device-window {
+      position: relative;
+      z-index: 1;
+      min-height: 540px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(0,212,255,.18), transparent 30%),
+        rgba(3, 8, 23, 0.86);
+      border: 1px solid rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+
+    body.light .device-window {
+      background:
+        radial-gradient(circle at 20% 15%, rgba(0,212,255,.14), transparent 30%),
+        rgba(255, 255, 255, 0.82);
+    }
+
+    .window-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dots i {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--danger);
+    }
+
+    .dots i:nth-child(2) { background: var(--accent); }
+    .dots i:nth-child(3) { background: var(--success); }
+
+    .window-top code {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .monitor {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .monitor-row {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      border-radius: 20px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 13px;
+      align-items: center;
+      animation: floatCard 5s ease-in-out infinite;
+    }
+
+    .monitor-row:nth-child(2) { animation-delay: .7s; }
+    .monitor-row:nth-child(3) { animation-delay: 1.2s; }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .chip-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(46,115,197,.9), rgba(0,212,255,.65));
+      color: white;
+    }
+
+    .monitor-row strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .monitor-row span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #04130a;
+      background: var(--success);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .terminal {
+      margin: 16px 18px 18px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.28);
+      border-radius: 20px;
+      padding: 16px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      color: #bceaff;
+      font-size: 13px;
+      min-height: 132px;
+      overflow: hidden;
+    }
+
+    .terminal .line {
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: terminalIn .4s ease forwards;
+    }
+
+    .terminal .line:nth-child(2) { animation-delay: .5s; }
+    .terminal .line:nth-child(3) { animation-delay: 1s; }
+    .terminal .line:nth-child(4) { animation-delay: 1.5s; }
+
+    @keyframes terminalIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .product-card {
+      margin: 0 18px 18px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid rgba(255, 216, 77, .34);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,216,77,.16), rgba(46,115,197,.1));
+      padding: 16px;
+      transition: .2s ease;
+    }
+
+    .product-card:hover {
+      border-color: rgba(255, 216, 77, .7);
+      transform: translateY(-2px);
+    }
+
+    .product-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #ffd84d, #ff9f43);
+      color: #151000;
+    }
+
+    .product-logo svg { width: 22px; height: 22px; }
+
+    .product-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .product-card strong {
+      display: block;
+      font-size: 17px;
+      margin: 2px 0;
+    }
+
+    .product-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .product-card .arrow {
+      color: var(--accent);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    body.light .product-card .arrow { color: #c07c00; }
+
+    section {
+      padding: 82px 0;
+    }
+
+    .section-title {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-title .eyebrow {
+      color: var(--primary-2);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+
+    .section-title p {
+      margin-top: 16px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .service-card {
+      min-height: 280px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 55px rgba(0,0,0,.12);
+      transition: transform .18s ease, background .2s ease, border-color .2s ease;
+      transform-style: preserve-3d;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -70px auto;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(0,212,255,.10);
+      filter: blur(8px);
+    }
+
+    .service-card:hover {
+      border-color: rgba(0,212,255,.45);
+      background: var(--card-strong);
+    }
+
+    .service-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(46,115,197,.18);
+      color: var(--primary-2);
+      margin-bottom: 34px;
+      transform: translateZ(24px);
+    }
+
+    .service-card h3 {
+      font-size: 19px;
+      letter-spacing: -.03em;
+      margin-bottom: 10px;
+      transform: translateZ(18px);
+    }
+
+    .service-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+      transform: translateZ(12px);
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 18px;
+      transform: translateZ(20px);
+    }
+
+    .service-tags span {
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      background: rgba(255,255,255,.035);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      padding: 24px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.10);
+    }
+
+    .panel h3 {
+      font-size: 28px;
+      letter-spacing: -.045em;
+      margin-bottom: 12px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .stack-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stack-cloud button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      padding: 10px 13px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .stack-cloud button:hover {
+      background: var(--primary);
+      border-color: transparent;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .workflow {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.045);
+      transition: .2s ease;
+    }
+
+    .step:hover {
+      transform: translateX(5px);
+      background: var(--card-strong);
+    }
+
+    .step-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 950;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .step span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    a.showcase { display: block; }
+
+    .showcase.featured {
+      border-color: rgba(255, 216, 77, .4);
+    }
+
+    .showcase.featured .mock {
+      background:
+        linear-gradient(90deg, rgba(255,216,77,.35), rgba(255,159,67,.12)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.09) 0 1px, transparent 1px 16px);
+    }
+
+    .showcase-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 216, 77, .18);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    body.light .showcase-label { color: #8a5a00; }
+
+    .showcase-link {
+      display: inline-block;
+      margin-top: 14px;
+      color: var(--primary-2);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .showcase {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      padding: 22px;
+      overflow: hidden;
+      position: relative;
+      min-height: 260px;
+      backdrop-filter: blur(16px);
+      transition: .2s ease;
+    }
+
+    .showcase:hover {
+      transform: translateY(-7px);
+      background: var(--card-strong);
+    }
+
+    .showcase .mock {
+      height: 110px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      margin-bottom: 18px;
+      background:
+        linear-gradient(90deg, rgba(46,115,197,.35), rgba(0,212,255,.12)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.09) 0 1px, transparent 1px 16px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase .mock::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 70px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+      animation: scan 2.8s linear infinite;
+    }
+
+    @keyframes scan {
+      from { left: -90px; }
+      to { left: 110%; }
+    }
+
+    .showcase h3 {
+      font-size: 21px;
+      letter-spacing: -.035em;
+      margin-bottom: 9px;
+    }
+
+    .showcase p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .faq {
+      display: grid;
+      gap: 12px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 18px 20px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      color: var(--muted);
+      line-height: 1.7;
+      transition: max-height .25s ease;
+    }
+
+    .faq-answer p {
+      padding: 0 20px 18px;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+    }
+
+    .cta {
+      padding-bottom: 110px;
+    }
+
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 38px;
+      padding: clamp(28px, 5vw, 56px);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,212,255,.22), transparent 32%),
+        radial-gradient(circle at 85% 80%, rgba(255,216,77,.16), transparent 30%),
+        linear-gradient(135deg, rgba(46,115,197,.24), rgba(255,255,255,.055));
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box h2 {
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1;
+      letter-spacing: -.06em;
+      max-width: 850px;
+    }
+
+    .cta-box p {
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 750px;
+      margin-top: 18px;
+      font-size: 17px;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+      color: var(--muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+    }
+
+    .socials a {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--card);
+      transition: .2s ease;
+    }
+
+    .socials a:hover {
+      transform: translateY(-3px);
+      color: var(--text);
+    }
+
+    .socials svg { width: 18px; height: 18px; }
+
+    .btn svg { width: 18px; height: 18px; flex: none; }
+
+    footer .credit a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .mobile-panel {
+      display: none;
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 60;
+      padding: 16px;
+      background: rgba(5, 8, 22, 0.74);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-110%);
+      transition: .25s ease;
+    }
+
+    body.light .mobile-panel {
+      background: rgba(255,255,255,.84);
+    }
+
+    .mobile-panel.open {
+      transform: translateY(0);
+    }
+
+    .mobile-panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .mobile-panel a {
+      display: block;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      margin-bottom: 10px;
+      font-weight: 850;
+      background: var(--card);
+    }
+
+    .back-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 30;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: .2s ease;
+    }
+
+    .back-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: .65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1120px) {
+      .services {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .service-card:last-child {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 940px) {
+      .nav-links,
+      .nav-actions .desktop-only {
+        display: none;
+      }
+
+      .menu-btn {
+        display: grid;
+      }
+
+      .mobile-panel {
+        display: block;
+      }
+
+      .hero {
+        padding-top: 120px;
+      }
+
+      .hero-grid,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .device-window {
+        min-height: auto;
+      }
+
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 660px) {
+      header {
+        top: 10px;
+      }
+
+      .container {
+        width: min(100% - 24px, var(--max));
+      }
+
+      .nav {
+        padding: 10px;
+        border-radius: 24px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand span {
+        font-size: 14px;
+      }
+
+      .brand small {
+        font-size: 9px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-bottom: 54px;
+      }
+
+      .hero-actions,
+      .cta-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .mini-stats,
+      .services {
+        grid-template-columns: 1fr;
+      }
+
+      .service-card:last-child {
+        grid-column: auto;
+      }
+
+      .monitor-row {
+        grid-template-columns: auto 1fr;
+      }
+
+      .status-pill {
+        grid-column: 1 / -1;
+        width: max-content;
+      }
+
+      .product-card {
+        grid-template-columns: auto 1fr;
+      }
+
+      .product-card .arrow {
+        display: none;
+      }
+
+      section {
+        padding: 58px 0;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .orb {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="grid-bg"></div>
+  <div class="orb" id="orb"></div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="mobile-panel-top">
+      <div class="brand">
+        <div class="brand-mark">JS</div>
+        <div><span>Jisong Studio</span><small>Tech Development</small></div>
+      </div>
+      <button class="icon-btn" id="closeMenu" aria-label="Tutup menu">✕</button>
+    </div>
+    <a href="#services">Layanan</a>
+    <a href="#capability">Kapabilitas</a>
+    <a href="#showcase">Solusi</a>
+    <a href="https://pos.lunarapps.my.id">LunarPoS ↗</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Kontak</a>
+  </div>
+
+  <header id="header">
+    <div class="container">
+      <nav class="nav" aria-label="Navigasi utama">
+        <a href="#home" class="brand">
+          <div class="brand-mark">JS</div>
+          <div>
+            <span>Jisong Studio</span>
+            <small>Build • Automate • Scale</small>
+          </div>
+        </a>
+
+        <div class="nav-links" id="navLinks">
+          <a href="#home">Home</a>
+          <a href="#services">Layanan</a>
+          <a href="#capability">Kapabilitas</a>
+          <a href="#showcase">Solusi</a>
+          <a href="#contact">Kontak</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="icon-btn" id="themeToggle" aria-label="Ganti tema">☾</button>
+          <a class="btn desktop-only" href="#contact">Mulai Project</a>
+          <button class="menu-btn" id="openMenu" aria-label="Buka menu">☰</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="badge"><span class="pulse-dot"></span> Sudah buka — terima project sejak Juli 2026</div>
+          <h1>From circuit to cloud, <span class="gradient-text">we build systems that work.</span></h1>
+          <p>
+            Jisong Studio fokus pada <span class="typing" id="typingText">Embedded System</span> — mulai dari perangkat IoT, integrasi server, aplikasi web/android, sampai AI training dan implementasi di lapangan.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#services">Lihat Layanan</a>
+            <a class="btn secondary" href="https://wa.me/6282219738874?text=Halo%20Jisong%20Studio%2C%20saya%20mau%20konsultasi%20project.">Chat WhatsApp</a>
+          </div>
+
+          <div class="mini-stats" aria-label="Ringkasan Jisong Studio">
+            <div class="stat">
+              <strong data-count="5">0</strong>
+              <span>Fokus layanan inti</span>
+            </div>
+            <div class="stat">
+              <strong data-count="24">0</strong>
+              <span>Jam monitoring sistem</span>
+            </div>
+            <div class="stat">
+              <strong data-count="100">0</strong>
+              <span>Custom sesuai kebutuhan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card reveal" id="heroCard">
+          <div class="device-window">
+            <div class="window-top">
+              <div class="dots"><i></i><i></i><i></i></div>
+              <code>studio.jisong.id / live-system</code>
+            </div>
+
+            <div class="monitor">
+              <div class="monitor-row">
+                <div class="chip-icon">▣</div>
+                <div>
+                  <strong>Embedded Controller</strong>
+                  <span>ESP32, Orange Pi, sensor, relay, Wiegand, thermal printer.</span>
+                </div>
+                <div class="status-pill">ONLINE</div>
+              </div>
+              <div class="monitor-row">
+                <div class="chip-icon">◎</div>
+                <div>
+                  <strong>Server & Realtime System</strong>
+                  <span>Linux, Nginx, database, API, Socket/SSE, monitoring.</span>
+                </div>
+                <div class="status-pill">STABLE</div>
+              </div>
+              <div class="monitor-row">
+                <div class="chip-icon">AI</div>
+                <div>
+                  <strong>AI Implementation</strong>
+                  <span>Training model, computer vision, automation, deployment.</span>
+                </div>
+                <div class="status-pill">READY</div>
+              </div>
+            </div>
+
+            <div class="terminal" aria-label="Terminal simulasi">
+              <div class="line">$ systemctl status jisong-studio</div>
+              <div class="line">✓ active (running) since 10 Jul 2026</div>
+              <div class="line">✓ embedded · server · software · AI</div>
+              <div class="line">✓ siap menerima project baru</div>
+            </div>
+
+            <a class="product-card" href="https://pos.lunarapps.my.id">
+              <div class="product-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+              </div>
+              <div>
+                <small>Produk dari studio</small>
+                <strong>LunarPoS</strong>
+                <span>Kasir gratis untuk usaha · pos.lunarapps.my.id</span>
+              </div>
+              <div class="arrow" aria-hidden="true">↗</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-title reveal">
+          <div class="eyebrow">Layanan Inti</div>
+          <h2>Bangun sistem dari hardware, server, aplikasi, sampai AI.</h2>
+          <p>Dirancang untuk kebutuhan bisnis, operasional lapangan, otomasi, dan produk teknologi yang butuh integrasi rapi.</p>
+        </div>
+
+        <div class="services">
+          <article class="service-card reveal tilt">
+            <div class="service-icon">⚙</div>
+            <h3>Embedded System</h3>
+            <p>Pengembangan firmware, integrasi sensor, relay, printer, RFID, Wiegand, microcontroller, dan board Linux.</p>
+            <div class="service-tags"><span>ESP32</span><span>Orange Pi</span><span>GPIO</span></div>
+          </article>
+
+          <article class="service-card reveal tilt">
+            <div class="service-icon">⌁</div>
+            <h3>IoT Development</h3>
+            <p>Perangkat online, data telemetry, remote control, dashboard realtime, integrasi API, dan monitoring perangkat.</p>
+            <div class="service-tags"><span>MQTT</span><span>REST API</span><span>Realtime</span></div>
+          </article>
+
+          <article class="service-card reveal tilt">
+            <div class="service-icon">▤</div>
+            <h3>Server Maintenance</h3>
+            <p>Setup VPS/local server, Nginx, SSL, database, backup, hardening dasar, log checking, dan optimasi service.</p>
+            <div class="service-tags"><span>Linux</span><span>Nginx</span><span>Database</span></div>
+          </article>
+
+          <article class="service-card reveal tilt">
+            <div class="service-icon">⌘</div>
+            <h3>Software Development</h3>
+            <p>Pembuatan aplikasi web, dashboard admin, sistem informasi, aplikasi Android, integrasi pembayaran, dan API backend.</p>
+            <div class="service-tags"><span>Web</span><span>Android</span><span>Backend</span></div>
+          </article>
+
+          <article class="service-card reveal tilt">
+            <div class="service-icon">✦</div>
+            <h3>AI Development</h3>
+            <p>Training model, computer vision, OCR, deteksi objek, automation assistant, dan deployment AI ke sistem produksi.</p>
+            <div class="service-tags"><span>Training</span><span>Vision</span><span>Deploy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="capability">
+      <div class="container split">
+        <div class="panel reveal">
+          <div class="section-title" style="margin-bottom: 0;">
+            <div class="eyebrow">Kapabilitas</div>
+            <h2>Tech stack fleksibel untuk kebutuhan nyata.</h2>
+            <p>Teknologi yang paling sering kami pakai. Klik salah satu untuk melihat biasanya dipakai untuk apa.</p>
+          </div>
+          <div class="stack-cloud" id="stackCloud">
+            <button>ESP32</button>
+            <button>Orange Pi</button>
+            <button>Node.js</button>
+            <button>Go</button>
+            <button>Python AI</button>
+            <button>PostgreSQL</button>
+            <button>Nginx</button>
+            <button>Android Kotlin</button>
+            <button>Socket.IO</button>
+            <button>Linux Server</button>
+          </div>
+          <p style="margin-top: 18px;" id="stackInfo">Pilih salah satu stack untuk highlight.</p>
+        </div>
+
+        <div class="panel reveal">
+          <h3>Alur kerja project</h3>
+          <p style="margin-bottom: 18px;">Dari kebutuhan sampai sistem siap dipakai operator di lapangan.</p>
+          <div class="workflow">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div><strong>Analisa kebutuhan</strong><span>Mapping proses bisnis, perangkat, jaringan, database, dan flow user.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div><strong>Prototype cepat</strong><span>Membuat versi awal untuk validasi hardware, API, UI, dan integrasi.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div><strong>Implementasi produksi</strong><span>Deploy ke server/perangkat, testing, optimasi, dan dokumentasi dasar.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div><strong>Maintenance</strong><span>Monitoring, backup, update fitur, dan perbaikan ketika sistem berkembang.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="showcase">
+      <div class="container">
+        <div class="section-title reveal">
+          <div class="eyebrow">Contoh Solusi</div>
+          <h2>Sistem yang cocok untuk dunia operasional.</h2>
+          <p>Produk yang kami jalankan sendiri, dan jenis sistem yang biasa kami bangun untuk klien.</p>
+        </div>
+
+        <div class="showcase-grid">
+          <a class="showcase featured reveal" href="https://pos.lunarapps.my.id">
+            <div class="mock"></div>
+            <span class="showcase-label">Produk kami</span>
+            <h3>LunarPoS</h3>
+            <p>Aplikasi kasir berbasis workspace: daftar perusahaan gratis, kasir langsung jalan, fitur premium bisa diaktifkan kapan saja, dan struk dicetak lewat printer Bluetooth.</p>
+            <span class="showcase-link">Kunjungi pos.lunarapps.my.id ↗</span>
+          </a>
+          <article class="showcase reveal">
+            <div class="mock"></div>
+            <h3>Smart Parking & Gate System</h3>
+            <p>Integrasi tiket, QR, RFID, kamera, palang, sensor loop, kasir, dashboard, dan laporan operasional.</p>
+          </article>
+          <article class="showcase reveal">
+            <div class="mock"></div>
+            <h3>IoT Monitoring Dashboard</h3>
+            <p>Dashboard realtime untuk perangkat lapangan, status online, telemetry, notifikasi, dan kontrol jarak jauh.</p>
+          </article>
+          <article class="showcase reveal">
+            <div class="mock"></div>
+            <h3>AI Vision Implementation</h3>
+            <p>Computer vision untuk OCR, deteksi objek, identifikasi pola, dan automation berbasis kamera.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container split">
+        <div class="section-title reveal">
+          <div class="eyebrow">FAQ</div>
+          <h2>Pertanyaan umum sebelum mulai.</h2>
+          <p>Belum ketemu jawabannya? Tanya langsung lewat <a href="https://wa.me/6282219738874" style="color: var(--primary-2); font-weight: 800;">WhatsApp</a>.</p>
+        </div>
+        <div class="faq reveal">
+          <div class="faq-item open">
+            <button class="faq-question">Apakah bisa membuat sistem custom dari nol? <span>+</span></button>
+            <div class="faq-answer"><p>Bisa. Sistem dapat dibuat mulai dari analisa flow, desain database, backend, frontend, firmware perangkat, sampai deployment.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Apakah bisa maintenance server yang sudah berjalan? <span>+</span></button>
+            <div class="faq-answer"><p>Bisa. Mulai dari pengecekan service, Nginx, SSL, database, backup, optimasi performa, sampai troubleshooting error.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">AI-nya hanya training atau bisa implementasi? <span>+</span></button>
+            <div class="faq-answer"><p>Bisa dua-duanya. Training model, evaluasi, optimasi, lalu integrasi ke aplikasi, API, server, atau perangkat edge.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Bagaimana cara mulai konsultasi? <span>+</span></button>
+            <div class="faq-answer"><p>Kirim pesan lewat WhatsApp di +62 822-1973-8874 atau email ke hello@jisong.id / jisong710@gmail.com. Ceritakan singkat kebutuhannya, nanti kita diskusikan bareng.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>Punya ide sistem yang harus nyambung dari alat, server, aplikasi, sampai AI?</h2>
+          <p>Jisong Studio siap bantu rancang, bangun, deploy, dan maintenance sistem teknologi yang benar-benar dipakai di lapangan.</p>
+          <div class="cta-actions">
+            <a class="btn" href="https://wa.me/6282219738874?text=Halo%20Jisong%20Studio%2C%20saya%20mau%20konsultasi%20project.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.2 3.1Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2Z"/></svg>
+              Chat WhatsApp
+            </a>
+            <a class="btn secondary" href="mailto:hello@jisong.id,jisong710@gmail.com?subject=Konsultasi%20Project%20Jisong%20Studio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+              Email
+            </a>
+            <a class="btn secondary" href="https://instagram.com/jisong_studio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg>
+              @jisong_studio
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="credit">© <span id="year">2026</span> Jisong Studio · dijalankan oleh <a href="https://jisong.id">Aji Sasongko</a></div>
+      <div class="socials">
+        <a href="https://wa.me/6282219738874" aria-label="WhatsApp" title="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.2 3.1Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2Z"/></svg>
+        </a>
+        <a href="https://instagram.com/jisong_studio" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg>
+        </a>
+        <a href="https://github.com/jisong710" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:hello@jisong.id,jisong710@gmail.com" aria-label="Email" title="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="icon-btn back-top" id="backTop" aria-label="Kembali ke atas">↑</button>
+
+  <script>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+    const header = $("#header");
+    const backTop = $("#backTop");
+    const mobilePanel = $("#mobilePanel");
+
+    const words = [
+      "Embedded System",
+      "IoT Development",
+      "Server Maintenance",
+      "Software Development",
+      "AI Development"
+    ];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    const typingText = $("#typingText");
+
+    function typeLoop() {
+      const word = words[wordIndex];
+      typingText.textContent = word.slice(0, charIndex);
+
+      if (!deleting && charIndex < word.length) {
+        charIndex++;
+        setTimeout(typeLoop, 75);
+        return;
+      }
+
+      if (!deleting && charIndex === word.length) {
+        deleting = true;
+        setTimeout(typeLoop, 1250);
+        return;
+      }
+
+      if (deleting && charIndex > 0) {
+        charIndex--;
+        setTimeout(typeLoop, 35);
+        return;
+      }
+
+      deleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      setTimeout(typeLoop, 250);
+    }
+    typeLoop();
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    $$(".reveal").forEach(el => revealObserver.observe(el));
+
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.count || 0);
+        let current = 0;
+        const duration = 1000;
+        const start = performance.now();
+
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          current = Math.floor(progress * target);
+          el.textContent = target === 100 ? current + "%" : current + "+";
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: 0.7 });
+
+    $$('[data-count]').forEach(el => countObserver.observe(el));
+
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      header.classList.toggle("scrolled", y > 40);
+      backTop.classList.toggle("show", y > 700);
+
+      const sections = ["home", "services", "capability", "showcase", "contact"];
+      let active = "home";
+      sections.forEach(id => {
+        const section = document.getElementById(id);
+        if (!section) return;
+        const top = section.getBoundingClientRect().top;
+        if (top <= 160) active = id;
+      });
+
+      $$("#navLinks a").forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + active);
+      });
+    });
+
+    backTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    $("#openMenu").addEventListener("click", () => mobilePanel.classList.add("open"));
+    $("#closeMenu").addEventListener("click", () => mobilePanel.classList.remove("open"));
+    $$(".mobile-panel a").forEach(link => link.addEventListener("click", () => mobilePanel.classList.remove("open")));
+
+    const themeToggle = $("#themeToggle");
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem("jisong-theme"); } catch (e) {}
+    if (savedTheme === "light") {
+      document.body.classList.add("light");
+      themeToggle.textContent = "☀";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      const isLight = document.body.classList.contains("light");
+      themeToggle.textContent = isLight ? "☀" : "☾";
+      try { localStorage.setItem("jisong-theme", isLight ? "light" : "dark"); } catch (e) {}
+    });
+
+    const heroCard = $("#heroCard");
+    heroCard.addEventListener("mousemove", (event) => {
+      const rect = heroCard.getBoundingClientRect();
+      const mx = ((event.clientX - rect.left) / rect.width) * 100;
+      const my = ((event.clientY - rect.top) / rect.height) * 100;
+      heroCard.style.setProperty("--mx", mx + "%");
+      heroCard.style.setProperty("--my", my + "%");
+    });
+
+    $$(".tilt").forEach(card => {
+      card.addEventListener("mousemove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const rotateY = ((x / rect.width) - 0.5) * 10;
+        const rotateX = ((y / rect.height) - 0.5) * -10;
+        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      });
+    });
+
+    const stackDescriptions = {
+      "ESP32": "Cocok untuk IoT controller, sensor, relay, gate, RFID, dan perangkat lapangan low power.",
+      "Orange Pi": "Board Linux kecil untuk gateway, local server, kamera, GPIO, dan edge processing.",
+      "Node.js": "Realtime API, Socket.IO, service printer, integrasi device, dan backend cepat.",
+      "Go": "Backend ringan, single binary, API stabil, service server, dan aplikasi operasional.",
+      "Python AI": "Training model, computer vision, OCR, automation, dan inference server.",
+      "PostgreSQL": "Database kuat untuk sistem baru yang butuh struktur lebih rapi dan scalable.",
+      "Nginx": "Reverse proxy, SSL, virtual host, load balancing dasar, dan serving aplikasi web.",
+      "Android Kotlin": "Aplikasi Android native untuk operator, konfigurasi device, atau dashboard mobile.",
+      "Socket.IO": "Realtime event untuk dashboard, printer, gate, notifikasi, dan monitoring sistem.",
+      "Linux Server": "Deployment VPS/local server, service manager, firewall, log, backup, dan monitoring."
+    };
+
+    $$("#stackCloud button").forEach(button => {
+      button.addEventListener("click", () => {
+        $("#stackInfo").textContent = stackDescriptions[button.textContent] || "Stack siap digunakan sesuai kebutuhan project.";
+      });
+    });
+
+    $$(".faq-question").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.closest(".faq-item");
+        item.classList.toggle("open");
+      });
+    });
+
+    const orb = $("#orb");
+    window.addEventListener("pointermove", (event) => {
+      orb.style.left = event.clientX + "px";
+      orb.style.top = event.clientY + "px";
+    });
+
+    $("#year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
